@@ -39,10 +39,10 @@ RUN apt-get -y update --fix-missing &&  \
 SHELL [ "conda", "run", "-n", "isis", "/bin/bash", "-c" ]
 
 # install isis3 conda environment [could upgrade to ISIS4 eventually]
-RUN conda config --env --add channels conda-forge       &&\
-    conda config --env --add channels usgs-astrogeology &&\
-    conda install -c usgs-astrogeology isis=3.10.2      &&\
-    python $CONDA_PREFIX/scripts/isis3VarInit.py        &&\
+RUN conda config --env --add channels conda-forge                                                       &&\
+    conda config --env --add channels usgs-astrogeology                                                 &&\
+    conda install -c usgs-astrogeology isis=3.10.2                                                      &&\
+    python $CONDA_PREFIX/scripts/isis3VarInit.py                                                        &&\
     echo "conda activate isis" >> ~/.bashrc
     
 # install gdal on top of isis
@@ -57,4 +57,4 @@ RUN conda config --env --add channels conda-forge       &&\
 # Start the server on port 8080
 WORKDIR ${PIEROOT}
 EXPOSE 8080
-CMD [ "node", "server.js"]
+CMD [ "node", "server.js" ]
