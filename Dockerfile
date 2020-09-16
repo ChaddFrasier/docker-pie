@@ -2,8 +2,8 @@ FROM ubuntu:bionic
 LABEL maintainer="github@ChaddFrasier"
 
 # set required environement variables
-ENV PATH=/opt/conda/bin:$PATH       \
-    ISIS3ROOT=/opt/conda/env/isis   \
+ENV PATH=/opt/conda/bin:$PATH     \
+    ISIS3ROOT=/opt/conda/env/isis \
     PIEROOT=/usr/src/PIE
 
 # install pre-reqs
@@ -39,18 +39,22 @@ RUN apt-get -y update --fix-missing &&  \
 SHELL [ "conda", "run", "-n", "isis", "/bin/bash", "-c" ]
 
 # install isis3 conda environment [could upgrade to ISIS4 eventually]
-RUN conda config --env --add channels conda-forge                                                       &&\
-    conda config --env --add channels usgs-astrogeology                                                 &&\
-    conda install -c usgs-astrogeology isis=3.10.2                                                      &&\
-    python $CONDA_PREFIX/scripts/isis3VarInit.py                                                        &&\
-    echo "conda activate isis" >> ~/.bashrc
+RUN conda config --env --add channels conda-forge       &&\
+    conda config --env --add channels usgs-astrogeology &&\
+    conda install -c usgs-astrogeology isis=3.10.2      &&\
+    python $CONDA_PREFIX/scripts/isis3VarInit.py                                      
+
+# install the base data
+#RUN cd $ISIS3DATA                                                                       &&\
+#    rsync -azv --delete --partial isisdist.astrogeology.usgs.gov::isis3data/data/base . &&\
+#    echo "conda activate isis" >> ~/.bashrc
     
 # install gdal on top of isis
 SHELL [ "conda", "run", "-n", "gdal", "/bin/bash", "-c" ]
-RUN conda config --env --add channels conda-forge       &&\
-    conda install -y gdal                               &&\
-    echo "conda activate --stack gdal" >> ~/.bashrc     &&\
-    # download the server code and the dependencies
+
+RUN conda config --env --add channels conda-forge                  &&\
+    conda install -y gdal                                          &&\
+    echo "conda activate --stack gdal" >> ~/.bashrc                &&\
     git clone "https://github.com/ChaddFrasier/PIE.git" ${PIEROOT} &&\
     cd ${PIEROOT} && npm install --only=prod
 
