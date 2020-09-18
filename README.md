@@ -9,23 +9,17 @@ A planetary image editor built for the USGS researchers with the goal of simplif
 - instructions on how to update docker container
 - point users to github link for 'contributing' to PIE
 
+### Requirements
+1. [Install](https://docs.docker.com/engine/install/) Docker CE for your OS.
+- If you want the smallest install you need ~ 2GB to install the server.
+- If you want the full server you need ~ 15GB.
+
+
 ### Install
-Installation can take place on any machine that can run docker and has the memory capable for the install.
 
-#### Requirements
-- 16GB or more storage available in your `/var` and or using a system with memory swapping (most Windows & MacOS machines).
-- [Install](https://docs.docker.com/engine/install/) Docker CE for your OS.
-
-For The Normmal builds will require a data download.
-- these containers are for use on local machines that may have a limit to their `/var` folder
+Pull down the image you want. All tags can be found at on the repository *tags* page.
 ```
-docker pull chaddfrasier/pie-usgs:latest
-```
-
-For the server edition (~22GB) with full Base ISIS data preinstalled.
-- For a server implimentation or a system with memory-swap defaults.
-```
-docker pull chaddfrasier/pie-usgs:baseserver
+docker pull chaddfrasier/pie-usgs:<tag>
 ```
 
 ### Running
