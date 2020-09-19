@@ -43,11 +43,6 @@ RUN conda config --env --add channels conda-forge       &&\
     conda config --env --add channels usgs-astrogeology &&\
     conda install -c usgs-astrogeology isis=3.10.2      &&\
     python $CONDA_PREFIX/scripts/isis3VarInit.py                                      
-
-# install the base data
-# RUN cd $ISIS3DATA                                                                       &&\
- #   rsync -azv --delete --partial isisdist.astrogeology.usgs.gov::isis3data/data/base . &&\
- #   echo "conda activate isis" >> ~/.bashrc
     
 # install gdal on top of isis
 SHELL [ "conda", "run", "-n", "gdal", "/bin/bash", "-c" ]
@@ -61,4 +56,4 @@ RUN conda config --env --add channels conda-forge                  &&\
 # Start the server on port 8080
 WORKDIR ${PIEROOT}
 EXPOSE 8080
-CMD [ "node", "server.js" ]
+CMD [ "npm", "start" ]
