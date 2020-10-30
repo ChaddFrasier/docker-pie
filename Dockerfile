@@ -19,6 +19,7 @@ RUN apt-get -y update --fix-missing &&  \
                         libxrender1     \
                         nodejs          \
                         npm         &&  \
+    npm cache clean -f && npm install -g n                                       &&\
     # install Miniconda3 using steps found on miniconda's home docker.
     # here: https://hub.docker.com/r/continuumio/miniconda/dockerfile
     wget "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh" &&\
@@ -33,6 +34,8 @@ RUN apt-get -y update --fix-missing &&  \
     . ~/.bashrc && conda init && bash && conda update -n base -c defaults conda  &&\
     # create both environments needed for PIE
     conda create -n isis python=3.6 && conda create -n gdal
+
+RUN n stable
 
 # force the shell to use the isis env for every 'RUN' commmand.
 # see: https://pythonspeed.com/articles/activate-conda-dockerfile/
