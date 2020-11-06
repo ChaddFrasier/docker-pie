@@ -18,8 +18,7 @@ RUN apt-get -y update --fix-missing &&  \
                         libsm6          \
                         libxrender1     \
                         nodejs          \
-                        npm         &&  \
-    npm cache clean -f && npm install -g n                                       &&\
+                        npm           &&\
     # install Miniconda3 using steps found on miniconda's home docker.
     # here: https://hub.docker.com/r/continuumio/miniconda/dockerfile
     wget "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh" &&\
@@ -34,13 +33,13 @@ RUN apt-get -y update --fix-missing &&  \
     . ~/.bashrc && conda init && bash && conda update -n base -c defaults conda  &&\
     # create both environments needed for PIE
     conda create -n isis python=3.6 && conda create -n gdal
-
+# update node
+RUN npm cache clean -f && npm install -g n
 RUN n stable
 
 # force the shell to use the isis env for every 'RUN' commmand.
 # see: https://pythonspeed.com/articles/activate-conda-dockerfile/
 SHELL [ "conda", "run", "-n", "isis", "/bin/bash", "-c" ]
-
 # install isis3 conda environment [could upgrade to ISIS4 eventually]
 RUN conda config --env --add channels conda-forge       &&\
     conda config --env --add channels usgs-astrogeology &&\
@@ -49,14 +48,12 @@ RUN conda config --env --add channels conda-forge       &&\
     
 # install gdal on top of isis
 SHELL [ "conda", "run", "-n", "gdal", "/bin/bash", "-c" ]
-
 RUN conda config --env --add channels conda-forge                  &&\
     conda install -y gdal                                          &&\
-    echo "conda activate --stack gdal" >> ~/.bashrc                &&\
     git clone "https://github.com/ChaddFrasier/PIE.git" ${PIEROOT} &&\
     cd ${PIEROOT} && npm install --only=prod
 
 # Start the server on port 8080
 WORKDIR ${PIEROOT}
 EXPOSE 8080
-CMD [ "npm", "start" ]
+CMD [ "conda", "run", "-n", "gdal", "conda", "activate", "--stack", "isis", "&&", "npm", "start" ]
