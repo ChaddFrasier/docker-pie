@@ -1,26 +1,27 @@
 FROM ubuntu:bionic
-LABEL maintainer="github@ChaddFrasier"
+
+LABEL maintainer="cfrasier@contractor.usgs.gov"
 
 # set required environement variables
 ENV PATH=/opt/conda/bin:$PATH     \
     ISIS3ROOT=/opt/conda/env/isis \
     PIEROOT=/usr/src/PIE
 
-# install pre-reqs
-RUN apt-get -y update --fix-missing     &&\
-    apt install -y fontconfig  &&\
+# install pre-reqs and windows Web fonts
+RUN apt-get -y update --fix-missing            &&\
+    apt install -y fontconfig                  &&\
     apt install -yy  ttf-mscorefonts-installer &&\
-    apt-get -y install rsync            \
-                        git             \
-                        wget            \
-                        libgl1-mesa-glx \
-                        ca-certificates \
-                        libglib2.0-0    \
-                        libxext6        \
-                        libsm6          \
-                        libxrender1     \
-                        nodejs          \
-                        npm           &&\
+    apt-get -y install rsync                     \
+                        git                      \
+                        wget                     \
+                        libgl1-mesa-glx          \
+                        ca-certificates          \
+                        libglib2.0-0             \
+                        libxext6                 \
+                        libsm6                   \
+                        libxrender1              \
+                        nodejs                   \
+                        npm                    &&\
     # install Miniconda3 using steps found on miniconda's home docker.
     # here: https://hub.docker.com/r/continuumio/miniconda/dockerfile
     wget "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh" &&\
@@ -35,9 +36,12 @@ RUN apt-get -y update --fix-missing     &&\
     . ~/.bashrc && conda init && bash && conda update -n base -c defaults conda  &&\
     # create both environments needed for PIE
     conda create -n isis python=3.6 && conda create -n gdal
+
 # update node
-RUN npm cache clean -f && fc-cache -f -v && npm install -g n
-RUN n stable
+RUN npm cache clean -f &&\
+    fc-cache -f -v     &&\
+    npm install -g n   &&\
+    n stable
 
 # force the shell to use the isis env for every 'RUN' commmand.
 # see: https://pythonspeed.com/articles/activate-conda-dockerfile/
