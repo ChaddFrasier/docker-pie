@@ -7,7 +7,7 @@ ENV PATH=/opt/conda/bin:$PATH     \
     PIEROOT=/usr/src/PIE
 
 # install pre-reqs
-RUN RUN apt-get -y update --fix-missing     &&\
+RUN apt-get -y update --fix-missing     &&\
     apt install -y fontconfig  &&\
     apt install -yy  ttf-mscorefonts-installer &&\
     apt-get -y install rsync            \
