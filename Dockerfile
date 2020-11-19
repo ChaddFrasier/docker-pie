@@ -7,7 +7,9 @@ ENV PATH=/opt/conda/bin:$PATH     \
     PIEROOT=/usr/src/PIE
 
 # install pre-reqs
-RUN apt-get -y update --fix-missing &&  \
+RUN RUN apt-get -y update --fix-missing     &&\
+    apt install -y fontconfig  &&\
+    apt install -yy  ttf-mscorefonts-installer &&\
     apt-get -y install rsync            \
                         git             \
                         wget            \
@@ -34,7 +36,7 @@ RUN apt-get -y update --fix-missing &&  \
     # create both environments needed for PIE
     conda create -n isis python=3.6 && conda create -n gdal
 # update node
-RUN npm cache clean -f && npm install -g n
+RUN npm cache clean -f && fc-cache -f -v && npm install -g n
 RUN n stable
 
 # force the shell to use the isis env for every 'RUN' commmand.
