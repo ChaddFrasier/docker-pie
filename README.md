@@ -61,4 +61,4 @@ $ docker kill <custom-name>
 ```
 
 ### Contribute
-Source code for the server is on [GitHub](https://github.com/ChaddFrasier/docker-pie).
+Source code for the server is on [GitHub](https://github.com/ChaddFrasier/PIE).
