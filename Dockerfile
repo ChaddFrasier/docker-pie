@@ -1,3 +1,13 @@
+# Build Instructions
+# ------------------
+# 1. Navigate to this path in the terminal
+# 
+# $ cd <path>/<to>/docker-pie
+# 
+# 2. Build using the custom command for this file
+#
+# $ docker build --rm -t chaddfrasier/pie-usgs:latest .
+# ------------------
 FROM ubuntu:bionic
 
 LABEL maintainer="cfrasier@contractor.usgs.gov"
