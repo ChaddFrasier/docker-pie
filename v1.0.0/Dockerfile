@@ -28,7 +28,6 @@ RUN apt-get update &&\
                         npm  &&\
     add-apt-repository ppa:ubuntugis/ppa && apt-get update && apt-get install -y gdal-bin &&\
     npm cache clean -f && npm install -g n && n stable &&\
-    apt-get clean &&\
     rm -rf /var/lib/apt/lists/*
 
 # install miniconda and server code
