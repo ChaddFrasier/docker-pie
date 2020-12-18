@@ -6,7 +6,7 @@ A planetary image editor built for the USGS researchers with the goal of simplif
 
 ### Requirements
 1. [Install](https://docs.docker.com/engine/install/) Docker CE for your OS.
-2. ~ 20GB of free disk space.
+2. ~ 21GB of free disk space.
 
 ### Install
 Pull down the image version you want to use by running the terminal command below.
