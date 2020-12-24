@@ -58,6 +58,10 @@ RUN chmod +x /usr/bin/tini
 # set tini entry script
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
 
+# Uncomment to test ISIS/GDAL while building
+#-  COPY envtest.sh .
+#-  RUN chmod +x ./envtest.sh && ./envtest.sh
+
 # set work dir and run
 WORKDIR ${PIEROOT}
-CMD [ "conda", "run", "-n", "isis", "npm", "run", "debug:mac" ]
+CMD [ "conda", "run", "-n", "isis", "npm", "start" ]
