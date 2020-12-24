@@ -47,7 +47,7 @@ Running with options.
 
 Running container.
 ```{bash}
-$ docker run --rm --name pie -p 8080:8080 chaddfrasier/pie-usgs:<version>
+$ docker run --rm -d --name pie -p 8080:8080 chaddfrasier/pie-usgs:<version>
 ```
 
 ### Stopping

@@ -1,5 +1,5 @@
 # Version 1.1.0
-# Build with non-root user tini
+# Build with non-root user tini @see https://github.com/krallin/tini/#tini---a-tiny-but-valid-init-for-containers
 FROM ubuntu:18.04
 LABEL maintainer="cfrasier@contractor.usgs.gov"
 
@@ -51,13 +51,13 @@ RUN conda config --env --add channels conda-forge && \
     conda install -c usgs-astrogeology isis=3.10.2 && python $CONDA_PREFIX/scripts/isis3VarInit.py &&\
     rsync -azv --delete --partial --exclude="testData" isisdist.astrogeology.usgs.gov::isis3data/data/base /opt/conda/envs/isis/data
 
-# Main Update to v1.0.0 
-# set tini user security code
+# install tini and give permissions to the tini script
 ENV TINI_VERSION v0.16.1
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
 RUN chmod +x /usr/bin/tini
+# set tini entry script
 ENTRYPOINT [ "/usr/bin/tini", "--" ]
 
-# set run dir and go
+# set work dir and run
 WORKDIR ${PIEROOT}
-CMD [ "conda", "run", "-n", "isis", "npm", "start"]
+CMD [ "conda", "run", "-n", "isis", "npm", "run", "debug:mac" ]
