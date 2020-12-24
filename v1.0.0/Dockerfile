@@ -52,4 +52,4 @@ RUN conda config --env --add channels conda-forge && \
 
 # set run dir and go
 WORKDIR ${PIEROOT}
-ENTRYPOINT [ "conda", "run", "-n", "isis", "npm", "start"]
+CMD [ "conda", "run", "-n", "isis", "npm", "start"]
