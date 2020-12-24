@@ -1,5 +1,5 @@
-# Version 1.0.1
-# Build with non-root user for extra security
+# Version 1.1.0
+# Build with non-root user tini
 FROM ubuntu:18.04
 LABEL maintainer="cfrasier@contractor.usgs.gov"
 
@@ -29,8 +29,7 @@ RUN apt-get update &&\
                         npm  &&\
     add-apt-repository ppa:ubuntugis/ppa && apt-get update && apt-get install -y gdal-bin &&\
     npm cache clean -f && npm install -g n && n stable &&\
-    rm -rf /var/lib/apt/lists/* &&\
-    groupadd -r piegroup && useradd --no-log-init -r -g piegroup pieuser
+    rm -rf /var/lib/apt/lists/*
 
 # install miniconda and server code
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.5.11-Linux-x86_64.sh -O ~/miniconda.sh && \
@@ -52,7 +51,13 @@ RUN conda config --env --add channels conda-forge && \
     conda install -c usgs-astrogeology isis=3.10.2 && python $CONDA_PREFIX/scripts/isis3VarInit.py &&\
     rsync -azv --delete --partial --exclude="testData" isisdist.astrogeology.usgs.gov::isis3data/data/base /opt/conda/envs/isis/data
 
+# Main Update to v1.0.0 
+# set tini user security code
+ENV TINI_VERSION v0.16.1
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+RUN chmod +x /usr/bin/tini
+ENTRYPOINT [ "/usr/bin/tini", "--" ]
+
 # set run dir and go
-USER pieuser
 WORKDIR ${PIEROOT}
-ENTRYPOINT [ "conda", "run", "-n", "isis", "npm", "start"]
+CMD [ "conda", "run", "-n", "isis", "npm", "start"]
