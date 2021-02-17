@@ -11,6 +11,7 @@ ENV LANG=C.UTF-8 \
 # install dependencies
 RUN apt-get update &&\
     apt-get install -y software-properties-common \
+                        ttf-mscorefonts-installer \
                         wget \
                         bzip2 \
                         ca-certificates \
@@ -27,6 +28,7 @@ RUN apt-get update &&\
                         libxrender1 \
                         nodejs \
                         npm  &&\
+                        fc-cache &&\
     add-apt-repository ppa:ubuntugis/ppa && apt-get update && apt-get install -y gdal-bin &&\
     npm cache clean -f && npm install -g n && n stable &&\
     rm -rf /var/lib/apt/lists/*
