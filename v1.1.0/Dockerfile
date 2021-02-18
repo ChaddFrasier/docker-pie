@@ -10,8 +10,9 @@ ENV LANG=C.UTF-8 \
 
 # install dependencies
 RUN apt-get update &&\
-    apt-get install -y software-properties-common \
-                        ttf-mscorefonts-installer \
+    apt-get install -y  cabextract \
+                        xfonts-utils \
+                        software-properties-common \
                         wget \
                         bzip2 \
                         ca-certificates \
@@ -28,10 +29,13 @@ RUN apt-get update &&\
                         libxrender1 \
                         nodejs \
                         npm  &&\
-                        fc-cache &&\
     add-apt-repository ppa:ubuntugis/ppa && apt-get update && apt-get install -y gdal-bin &&\
     npm cache clean -f && npm install -g n && n stable &&\
     rm -rf /var/lib/apt/lists/*
+
+# install web fonts into ubuntu
+RUN wget http://ftp.de.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.6_all.deb &&\
+    dpkg --install ttf-mscorefonts-installer_3.6_all.deb
 
 # install miniconda and server code
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.5.11-Linux-x86_64.sh -O ~/miniconda.sh && \
