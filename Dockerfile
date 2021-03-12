@@ -1,4 +1,3 @@
-# Version 1.0.0
 FROM ubuntu:18.04
 LABEL maintainer="cfrasier@contractor.usgs.gov"
 
@@ -9,7 +8,9 @@ ENV LANG=C.UTF-8 \
 
 # install dependencies
 RUN apt-get update &&\
-    apt-get install -y software-properties-common \
+    apt-get install -y  cabextract \
+                        xfonts-utils \
+                        software-properties-common \
                         wget \
                         bzip2 \
                         ca-certificates \
@@ -29,6 +30,10 @@ RUN apt-get update &&\
     add-apt-repository ppa:ubuntugis/ppa && apt-get update && apt-get install -y gdal-bin &&\
     npm cache clean -f && npm install -g n && n stable &&\
     rm -rf /var/lib/apt/lists/*
+
+# install web fonts into ubuntu
+RUN wget http://ftp.de.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.6_all.deb &&\
+    dpkg --install ttf-mscorefonts-installer_3.6_all.deb
 
 # install miniconda and server code
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.5.11-Linux-x86_64.sh -O ~/miniconda.sh && \
@@ -50,6 +55,17 @@ RUN conda config --env --add channels conda-forge && \
     conda install -c usgs-astrogeology isis=3.10.2 && python $CONDA_PREFIX/scripts/isis3VarInit.py &&\
     rsync -azv --delete --partial --exclude="testData" isisdist.astrogeology.usgs.gov::isis3data/data/base /opt/conda/envs/isis/data
 
-# set run dir and go
+# install tini and give permissions to the tini script
+ENV TINI_VERSION v0.16.1
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
+RUN chmod +x /usr/bin/tini
+# set tini entry script
+ENTRYPOINT [ "/usr/bin/tini", "--" ]
+
+# Uncomment to test ISIS/GDAL while building
+#-  COPY envtest.sh .
+#-  RUN chmod +x ./envtest.sh && ./envtest.sh
+
+# set work dir and run
 WORKDIR ${PIEROOT}
-CMD [ "conda", "run", "-n", "isis", "npm", "start"]
+CMD [ "conda", "run", "-n", "isis", "npm", "start" ]
