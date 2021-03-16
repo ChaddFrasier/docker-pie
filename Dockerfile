@@ -52,11 +52,8 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.5.11-Linux-x86
 SHELL [ "conda", "run", "-n", "isis", "/bin/bash", "-c" ]
 RUN conda config --env --add channels conda-forge && \
     conda config --env --add channels usgs-astrogeology && \
-    conda install -c usgs-astrogeology isis=3.10.2 && python $CONDA_PREFIX/scripts/isis3VarInit.py 
-    # &&\
-    # this line forces a ~18GB download. 
-    # Remove for custom container
-    # rsync -azv --delete --partial --exclude="testData" isisdist.astrogeology.usgs.gov::isis3data/data/base /opt/conda/envs/isis/data
+    conda install -c usgs-astrogeology isis=3.10.2 && python $CONDA_PREFIX/scripts/isis3VarInit.py &&\
+    rsync -azv --delete --partial --exclude="testData" isisdist.astrogeology.usgs.gov::isis3data/data/base /opt/conda/envs/isis/data
     
 # install tini and give permissions to the tini script
 ENV TINI_VERSION v0.16.1
