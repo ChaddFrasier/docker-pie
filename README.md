@@ -2,8 +2,9 @@
 Container for PIE
 
 ## Updates
-1. **01/15/2021**- Fixed Web-Fonts errors for Ubuntu
-1. **12/30/2020**- Container sets a non-root user using [tini](https://github.com/krallin/tini/#tini---a-tiny-but-valid-init-for-containers).
+1. **04/23/2021**- SVG file export is working well with Inkscape and browsers.
+2. **01/15/2021**- Fixed Web-Fonts errors for Ubuntu.
+3. **12/30/2020**- Container sets a non-root user using [tini](https://github.com/krallin/tini/#tini---a-tiny-but-valid-init-for-containers).
 
 ### Building
 ```{bash}
