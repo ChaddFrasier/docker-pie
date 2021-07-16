@@ -2,6 +2,7 @@
 Container for PIE
 
 ## Updates
+1. **07/14/2021**- Added PM2 to restart the server on the event of a crash.
 1. **06/01/2021**- Tiff / Cub Exportation is operational.
 1. **05/18/2021**- PIE accepted into Planetary Data Conference 2021.
 1. **04/23/2021**- SVG file export is working well with Inkscape and browsers.
